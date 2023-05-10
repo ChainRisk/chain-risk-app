@@ -1,4 +1,5 @@
 import { ReactNode, ReactText } from 'react';
+import { NavLink } from 'react-router-dom';
 import {
   Avatar,
   Box,
@@ -12,7 +13,6 @@ import {
   HStack,
   Icon,
   IconButton,
-  Link,
   Menu,
   MenuButton,
   MenuItem,
@@ -22,15 +22,7 @@ import {
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
-import {
-  FiChevronDown,
-  FiCompass,
-  FiHome,
-  FiMenu,
-  FiSettings,
-  FiStar,
-  FiTrendingUp,
-} from 'react-icons/fi';
+import { FiChevronDown, FiHome, FiMenu } from 'react-icons/fi';
 import { IconType } from 'react-icons';
 
 import { disconnect, getAccount } from '@wagmi/core';
@@ -39,14 +31,9 @@ import { SiChainlink } from 'react-icons/all';
 interface LinkItemProps {
   name: string;
   icon: IconType;
+  to: string;
 }
-const LinkItems: Array<LinkItemProps> = [
-  { name: 'Home', icon: FiHome },
-  { name: 'Trending', icon: FiTrendingUp },
-  { name: 'Explore', icon: FiCompass },
-  { name: 'Favourites', icon: FiStar },
-  { name: 'Settings', icon: FiSettings },
-];
+const LinkItems: Array<LinkItemProps> = [{ name: 'Home', icon: FiHome, to: '/' }];
 
 export const Sidebar = ({ children }: { children: ReactNode }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -101,7 +88,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
       {LinkItems.map((link) => (
-        <NavItem key={link.name} icon={link.icon}>
+        <NavItem to={link.to} key={link.name} icon={link.icon}>
           {link.name}
         </NavItem>
       ))}
@@ -112,36 +99,43 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
 interface NavItemProps extends FlexProps {
   icon: IconType;
   children: ReactText;
+  to: string;
 }
-const NavItem = ({ icon, children, ...rest }: NavItemProps) => {
+const NavItem = ({ icon, children, to, ...rest }: NavItemProps) => {
   return (
-    <Link href="#" style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
-      <Flex
-        align="center"
-        p="4"
-        mx="4"
-        borderRadius="lg"
-        role="group"
-        cursor="pointer"
-        _hover={{
-          bg: 'gray.600',
-          color: 'white',
-        }}
-        {...rest}
-      >
-        {icon && (
-          <Icon
-            mr="4"
-            fontSize="16"
-            _groupHover={{
-              color: 'white',
-            }}
-            as={icon}
-          />
-        )}
-        {children}
-      </Flex>
-    </Link>
+    <NavLink to={to}>
+      {({ isActive }) => (
+        <Flex
+          align="center"
+          p="4"
+          mx="4"
+          borderRadius="lg"
+          role="group"
+          cursor="pointer"
+          bg={isActive ? 'gray.100' : undefined}
+          color={isActive ? 'gray.600' : undefined}
+          _hover={{
+            bg: 'gray.200',
+            // color: 'white',
+          }}
+          {...rest}
+        >
+          {icon && (
+            <Icon
+              mr="4"
+              fontSize="16"
+              _groupHover={
+                {
+                  // color: 'white',
+                }
+              }
+              as={icon}
+            />
+          )}
+          {children}
+        </Flex>
+      )}
+    </NavLink>
   );
 };
 

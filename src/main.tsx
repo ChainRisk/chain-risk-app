@@ -5,6 +5,7 @@ import { configureChains, createConfig, WagmiConfig } from 'wagmi';
 import { ChakraProvider } from '@chakra-ui/react';
 import { localhost } from 'wagmi/chains';
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
+import { BrowserRouter } from 'react-router-dom';
 
 const { publicClient, webSocketPublicClient } = configureChains(
   [localhost],
@@ -26,17 +27,19 @@ const config = createConfig({
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <WagmiConfig config={config}>
-      <ChakraProvider
-        toastOptions={{
-          defaultOptions: {
-            position: 'bottom-right',
-            duration: 5000,
-            isClosable: true,
-          },
-        }}
-      >
-        <App />
-      </ChakraProvider>
+      <BrowserRouter>
+        <ChakraProvider
+          toastOptions={{
+            defaultOptions: {
+              position: 'bottom-right',
+              duration: 5000,
+              isClosable: true,
+            },
+          }}
+        >
+          <App />
+        </ChakraProvider>
+      </BrowserRouter>
     </WagmiConfig>
   </React.StrictMode>,
 );
