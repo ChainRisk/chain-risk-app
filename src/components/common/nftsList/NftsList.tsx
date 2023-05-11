@@ -3,7 +3,7 @@ import NftCard from '../nftCard/NftCard.tsx';
 
 export default function NftsList() {
   return (
-    <SimpleGrid columns={3} spacingX={12} spacingY={24} py={12}>
+    <SimpleGrid minChildWidth="320px" columns={3} spacingX={12} spacingY={20} py={12}>
       <NftCard />
       <NftCard />
       <NftCard />

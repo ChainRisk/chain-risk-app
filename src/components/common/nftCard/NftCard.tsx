@@ -10,7 +10,7 @@ const NftCard = () => {
       p={6}
       w={'full'}
       bg={useColorModeValue('white', 'gray.800')}
-      boxShadow={'2xl'}
+      boxShadow={'lg'}
       rounded={'lg'}
       pos={'relative'}
       zIndex={1}
@@ -26,7 +26,7 @@ const NftCard = () => {
           w: 'full',
           h: 'full',
           pos: 'absolute',
-          top: 5,
+          top: 3,
           left: 0,
           backgroundImage: `url(${IMAGE})`,
           filter: 'blur(15px)',
@@ -38,7 +38,13 @@ const NftCard = () => {
           },
         }}
       >
-        <Image rounded={'lg'} height={230} objectFit={'cover'} src={IMAGE} />
+        <Image
+          rounded={'lg'}
+          height={230}
+          width={'100%'}
+          objectFit={'cover'}
+          src={IMAGE}
+        />
       </Box>
       <Stack pt={10}>
         <Stack align={'center'} direction={'row'} justify={'space-between'}>

@@ -1,10 +1,13 @@
-import { Box, Button, Stack, Text, useToast } from '@chakra-ui/react';
-import { useAccount, useContractRead, useContractWrite } from 'wagmi';
+import { Box, Button, Stack, Text } from '@chakra-ui/react';
+import { useAccount, useContractRead } from 'wagmi';
 import { myTokenABI } from '../../../utils/myTokenABI.ts';
+import { useState } from 'react';
+import MintNftModal from '../mintNftModal/MintNftModal.tsx';
 
 const BalanceInfo = () => {
   const { address } = useAccount();
-  const toast = useToast();
+
+  const [showMinNftModal, setShowMintNftModal] = useState(false);
 
   const { data: symbol, isLoading: symbolLoading } = useContractRead({
     address: '0xFa315Ca811F341e05fdb83A62D8B4DEBA98dbf62',
@@ -24,28 +27,9 @@ const BalanceInfo = () => {
     address: '0xFa315Ca811F341e05fdb83A62D8B4DEBA98dbf62',
     abi: myTokenABI,
     functionName: 'balanceOf',
-    args: [address],
+    args: [address || '0x000000'],
     watch: true,
-  });
-
-  const { isLoading, write } = useContractWrite({
-    address: '0xFa315Ca811F341e05fdb83A62D8B4DEBA98dbf62',
-    abi: myTokenABI,
-    functionName: 'safeMint',
-    onSuccess() {
-      toast({
-        title: 'Success',
-        description: `Successfully minted your NFT!`,
-        status: 'success',
-      });
-    },
-    onError() {
-      toast({
-        title: 'Error',
-        description: `There was an error minting your NFT.`,
-        status: 'error',
-      });
-    },
+    enabled: !!address,
   });
 
   return (
@@ -64,23 +48,19 @@ const BalanceInfo = () => {
             {nameIsLoading ? 'Loading...' : String(name)}(
             {symbolLoading ? 'Loading...' : String(symbol)})
           </Text>
-          <Text color="gray.500" fontSize="sm">
-            Ballance: {balanceDataIsLoading ? 'Loading...' : Number(balanceData)}{' '}
+          <Text colorScheme="gray" fontSize="sm">
+            Balance: {balanceDataIsLoading ? 'Loading...' : Number(balanceData)}{' '}
           </Text>
         </Box>
         <Button
           variant="solid"
           colorScheme="blue"
-          isLoading={isLoading}
-          onClick={() =>
-            write({
-              args: [address, 'spacebear_1.json'],
-            })
-          }
+          onClick={() => setShowMintNftModal(true)}
         >
-          Mint the NFT
+          Mint NFT
         </Button>
       </Stack>
+      <MintNftModal isOpen={showMinNftModal} onClose={() => setShowMintNftModal(false)} />
     </>
   );
 };

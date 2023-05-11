@@ -413,4 +413,4 @@ export const myTokenABI = [
     type: 'function',
     constant: true,
   },
-];
+] as const;
