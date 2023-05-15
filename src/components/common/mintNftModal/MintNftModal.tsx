@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Button,
   FormControl,
   FormErrorMessage,
@@ -12,15 +13,17 @@ import {
   ModalHeader,
   ModalOverlay,
   Stack,
+  Text,
   useToast,
+  VStack,
 } from '@chakra-ui/react';
-import { useAccount, useContractWrite } from 'wagmi';
+import { useContractWrite } from 'wagmi';
 import { myTokenABI } from '../../../utils/myTokenABI.ts';
 import { useForm } from 'react-hook-form';
 import React, { useEffect } from 'react';
+import { getAccount } from '@wagmi/core';
 
 interface FormValues {
-  address: `0x${string}`;
   apiKey: string;
 }
 
@@ -31,7 +34,7 @@ interface MintNftModalProps {
 
 const MintNftModal: React.FC<MintNftModalProps> = ({ isOpen, onClose }) => {
   const toast = useToast();
-  const { address } = useAccount();
+  const account = getAccount();
 
   const { isLoading, write } = useContractWrite({
     address: '0xFa315Ca811F341e05fdb83A62D8B4DEBA98dbf62',
@@ -59,21 +62,30 @@ const MintNftModal: React.FC<MintNftModalProps> = ({ isOpen, onClose }) => {
     register,
     formState: { errors },
     reset,
+    // watch,
   } = useForm<FormValues>();
 
-  const handleMintNft = ({ apiKey, address: addressValue }: FormValues) => {
+  // const watchApiKey = watch('apiKey');
+
+  const handleMintNft = ({ apiKey }: FormValues) => {
     console.log('apiKey', apiKey);
 
-    write({
-      args: [addressValue, 'spacebear_1.json'],
-    });
+    if (account?.address) {
+      write({
+        args: [account.address, 'spacebear_1.json'],
+      });
+    }
   };
 
   useEffect(() => {
-    reset({
-      address,
-    });
-  }, [reset, address]);
+    reset();
+  }, [reset, isOpen]);
+
+  // const {
+  //   data: userScore,
+  //   isLoading: userScoreIsLoading,
+  //   error: userScoreError,
+  // } = useUserScore(watchApiKey);
 
   return (
     <>
@@ -85,22 +97,39 @@ const MintNftModal: React.FC<MintNftModalProps> = ({ isOpen, onClose }) => {
             <ModalCloseButton />
             <ModalBody pb={6}>
               <Stack spacing={3}>
-                <FormControl isInvalid={!!errors.address}>
-                  <FormLabel htmlFor="address">Address</FormLabel>
-                  <Input
-                    id="address"
-                    {...register('address', {
-                      required: 'Address is required',
-                    })}
+                <Stack direction={'row'}>
+                  <Avatar
+                    size={'sm'}
+                    src={
+                      'https://images.unsplash.com/photo-1618556450994-a6a128ef0d9d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1664&q=80'
+                    }
                   />
-                  <FormErrorMessage>
-                    {errors.address && (errors.address.message as string)}
-                  </FormErrorMessage>
-                </FormControl>
+                  <VStack
+                    display={{ base: 'none', md: 'flex' }}
+                    alignItems="flex-start"
+                    spacing="1px"
+                    ml="2"
+                    overflow="hidden"
+                  >
+                    <Text
+                      overflow="hidden"
+                      overflowWrap="normal"
+                      width="100%"
+                      textOverflow="ellipsis"
+                      fontSize="sm"
+                    >
+                      {account?.address}
+                    </Text>
+                    <Text fontSize="xs" color="gray.600">
+                      {account?.connector?.name}
+                    </Text>
+                  </VStack>
+                </Stack>
                 <FormControl isInvalid={!!errors.apiKey}>
                   <FormLabel htmlFor="apiKey">API key</FormLabel>
                   <Input
                     id="apiKey"
+                    type="password"
                     {...register('apiKey', {
                       required: 'API key is required',
                     })}
