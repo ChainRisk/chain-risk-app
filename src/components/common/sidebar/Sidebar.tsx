@@ -82,7 +82,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         <Text fontSize="3xl" fontWeight="bold" display="flex" alignItems="center" gap={3}>
           <SiChainlink />
           <Text fontSize="xl" fontWeight="bold">
-            Chainlink app
+            RiskPass
           </Text>
         </Text>
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
@@ -174,7 +174,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
       >
         <SiChainlink />
         <Text fontSize="xl" fontWeight="bold">
-          Chainlink app
+          RiskPass
         </Text>
       </Text>
 

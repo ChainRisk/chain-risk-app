@@ -30,7 +30,7 @@ const BalanceInfo = () => {
       >
         <Box flex={1}>
           <Text colorScheme="gray" fontSize="sm">
-            Total NFT contact balance:{' '}
+            Total NFT contract balance:{' '}
             {balanceIsLoading
               ? 'Loading...'
               : `${formatEther(BigInt(balance || 0))} LINK`}
