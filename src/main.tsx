@@ -2,22 +2,17 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.tsx';
 import { configureChains, createConfig, WagmiConfig } from 'wagmi';
+import { polygonMumbai } from 'wagmi/chains';
 import { ChakraProvider } from '@chakra-ui/react';
-import { localhost } from 'wagmi/chains';
-import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
 import { BrowserRouter } from 'react-router-dom';
 import { AxiosError } from 'axios';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { alchemyProvider } from '@wagmi/core/providers/alchemy';
+import { mainnet } from '@wagmi/core/chains';
 
 const { publicClient, webSocketPublicClient } = configureChains(
-  [localhost],
-  [
-    jsonRpcProvider({
-      rpc: () => ({
-        http: `http://127.0.0.1:7545`,
-      }),
-    }),
-  ],
+  [mainnet, polygonMumbai],
+  [alchemyProvider({ apiKey: import.meta.env.VITE_ALCHEMY_KEY })],
 );
 
 const config = createConfig({

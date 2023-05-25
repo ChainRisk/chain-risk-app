@@ -18,14 +18,13 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { useContractWrite, useWaitForTransaction } from 'wagmi';
-import { nftABI, nftContractAddress } from '../../../utils/nftABI.ts';
 import { useForm } from 'react-hook-form';
 import React, { useEffect } from 'react';
 import { getAccount } from '@wagmi/core';
-import { useUserScore } from '../../../data/hooks/userScore.ts';
+import { nftABI, nftContractAddress } from '../../../utils/nftABI.ts';
 
 interface FormValues {
-  apiKey: string;
+  value: number;
 }
 
 interface MintNftModalProps {
@@ -33,60 +32,22 @@ interface MintNftModalProps {
   onClose: () => void;
 }
 
-const MintNftModal: React.FC<MintNftModalProps> = ({ isOpen, onClose }) => {
+const TransferModal: React.FC<MintNftModalProps> = ({ isOpen, onClose }) => {
   const toast = useToast();
   const account = getAccount();
 
-  const { data: ratingData, write: requestRatingData } = useContractWrite({
+  const { data, write } = useContractWrite({
     address: nftContractAddress,
     abi: nftABI,
-    functionName: 'requestRatingData',
-    onError() {
-      toast({
-        title: 'Error',
-        description: `There was an error requesting rating data.`,
-        status: 'error',
-      });
-    },
+    functionName: 'transferLink',
   });
 
-  const { data: mintNFTData, write: writeMintNFT } = useContractWrite({
-    address: nftContractAddress,
-    abi: nftABI,
-    functionName: 'mintNFT',
-    onError() {
-      toast({
-        title: 'Error',
-        description: `There was an error minting your NFT.`,
-        status: 'error',
-      });
-    },
-  });
-
-  const { isLoading: ratingDataIsLoading } = useWaitForTransaction({
-    hash: ratingData?.hash,
-    onSuccess() {
-      if (account?.address) {
-        writeMintNFT({
-          args: [account.address],
-        });
-      }
-    },
-    onError() {
-      toast({
-        title: 'Error',
-        description: `There was an error requesting rating data.`,
-        status: 'error',
-      });
-    },
-  });
-
-  const { isLoading: mintNFTIsLoading } = useWaitForTransaction({
-    hash: mintNFTData?.hash,
+  const { isLoading } = useWaitForTransaction({
+    hash: data?.hash,
     onSuccess() {
       toast({
         title: 'Success',
-        description: `Successfully minted your NFT!`,
+        description: `Link transferred successfully!`,
         status: 'success',
       });
       onClose();
@@ -94,7 +55,7 @@ const MintNftModal: React.FC<MintNftModalProps> = ({ isOpen, onClose }) => {
     onError() {
       toast({
         title: 'Error',
-        description: `There was an error minting your NFT.`,
+        description: `There was an error transferring Link.`,
         status: 'error',
       });
     },
@@ -105,36 +66,25 @@ const MintNftModal: React.FC<MintNftModalProps> = ({ isOpen, onClose }) => {
     register,
     formState: { errors },
     reset,
-    watch,
   } = useForm<FormValues>();
 
-  const watchApiKey = watch('apiKey');
-
-  const handleMintNft = async ({ apiKey }: FormValues) => {
-    console.log('apiKey', apiKey);
-
-    if (account?.address) {
-      requestRatingData();
-    }
+  const handleApprove = ({ value }: FormValues) => {
+    write({
+      args: [BigInt(value)],
+    });
   };
 
   useEffect(() => {
-    reset();
+    reset({ value: 200000000000000000 });
   }, [reset, isOpen]);
-
-  const {
-    data: userScore,
-    isLoading: userScoreIsLoading,
-    error: userScoreError,
-  } = useUserScore(watchApiKey);
 
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose} size="lg">
         <ModalOverlay />
-        <form onSubmit={handleSubmit(handleMintNft)}>
+        <form onSubmit={handleSubmit(handleApprove)}>
           <ModalContent mx={3}>
-            <ModalHeader>Mint NFT</ModalHeader>
+            <ModalHeader>Transfer Link</ModalHeader>
             <ModalCloseButton />
             <ModalBody pb={6}>
               <Stack spacing={3}>
@@ -166,38 +116,25 @@ const MintNftModal: React.FC<MintNftModalProps> = ({ isOpen, onClose }) => {
                     </Text>
                   </VStack>
                 </Stack>
-                <FormControl isInvalid={!!errors.apiKey}>
-                  <FormLabel htmlFor="apiKey">API key</FormLabel>
+                <FormControl isInvalid={!!errors.value}>
+                  <FormLabel htmlFor="apiKey">Anount</FormLabel>
                   <Input
-                    id="apiKey"
-                    type="password"
-                    {...register('apiKey', {
-                      required: 'API key is required',
+                    type="number"
+                    id="value"
+                    {...register('value', {
+                      required: 'Value is required',
                     })}
                   />
                   <FormErrorMessage>
-                    {errors.apiKey && (errors.apiKey.message as string)}
+                    {errors.value && (errors.value.message as string)}
                   </FormErrorMessage>
                 </FormControl>
-
-                {userScoreIsLoading && <Text>Loading...</Text>}
-                {!!userScoreError && <Text>Api key is invalid</Text>}
-                {userScore && (
-                  <Text>
-                    Credit rating: {userScore.creditRating} ({userScore.value})
-                  </Text>
-                )}
               </Stack>
             </ModalBody>
 
             <ModalFooter>
-              <Button
-                type="submit"
-                isLoading={mintNFTIsLoading || ratingDataIsLoading}
-                colorScheme="blue"
-                mr={3}
-              >
-                Mint
+              <Button type="submit" isLoading={isLoading} colorScheme="blue" mr={3}>
+                Approve
               </Button>
               <Button onClick={onClose}>Cancel</Button>
             </ModalFooter>
@@ -208,4 +145,4 @@ const MintNftModal: React.FC<MintNftModalProps> = ({ isOpen, onClose }) => {
   );
 };
 
-export default MintNftModal;
+export default TransferModal;

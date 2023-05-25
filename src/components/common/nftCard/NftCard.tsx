@@ -1,9 +1,39 @@
 import { Box, Heading, Image, Stack, Text, useColorModeValue } from '@chakra-ui/react';
+import React, { useEffect, useState } from 'react';
 
-const IMAGE =
-  'https://images.unsplash.com/photo-1642104704074-907c0698cbd9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2232&q=80';
+// const IMAGE =
+//   'https://images.unsplash.com/photo-1642104704074-907c0698cbd9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2232&q=80';
 
-const NftCard = () => {
+interface NftCardProps {
+  nftURI: string;
+}
+
+function removeNonPrintableChars(str: string) {
+  return str.replace(/[^ -~]+/g, '');
+}
+
+const NftCard: React.FC<NftCardProps> = ({ nftURI }) => {
+  console.log('nftURI', nftURI);
+  const [data, setData] = useState({
+    score: '',
+    image: '',
+  });
+
+  useEffect(() => {
+    if (nftURI) {
+      fetch(removeNonPrintableChars(nftURI))
+        .then((response) => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            console.error('Error fetching nft data');
+          }
+        })
+        .then((jsonResponse) => setData(jsonResponse))
+        .catch((error) => console.error(error));
+    }
+  }, [nftURI]);
+
   return (
     <Box
       role={'group'}
@@ -28,7 +58,7 @@ const NftCard = () => {
           pos: 'absolute',
           top: 3,
           left: 0,
-          backgroundImage: `url(${IMAGE})`,
+          backgroundImage: `url(${data?.image})`,
           filter: 'blur(15px)',
           zIndex: -1,
         }}
@@ -43,21 +73,21 @@ const NftCard = () => {
           height={230}
           width={'100%'}
           objectFit={'cover'}
-          src={IMAGE}
+          src={data?.image}
         />
       </Box>
       <Stack pt={10}>
         <Stack align={'center'} direction={'row'} justify={'space-between'}>
           <Heading fontSize={'2xl'} fontFamily={'body'} fontWeight={500}>
-            NFT Title
+            {data?.score}
           </Heading>
-          <Text color={'gray.500'} fontSize={'sm'} textTransform={'uppercase'}>
-            NFT type
-          </Text>
+          {/*<Text color={'gray.500'} fontSize={'sm'} textTransform={'uppercase'}>*/}
+          {/*  NFT type*/}
+          {/*</Text>*/}
         </Stack>
         <Box>
           <Text color={'gray.500'} fontSize="sm">
-            Created at 2021-04-16
+            {nftURI}
           </Text>
         </Box>
       </Stack>
