@@ -96,7 +96,7 @@ const TransferModal: React.FC<MintNftModalProps> = ({ isOpen, onClose }) => {
                     }
                   />
                   <VStack
-                    display={{ base: 'none', md: 'flex' }}
+                    display="flex"
                     alignItems="flex-start"
                     spacing="1px"
                     ml="2"

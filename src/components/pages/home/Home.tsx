@@ -7,7 +7,7 @@ import { Box } from '@chakra-ui/react';
 const Home = () => {
   return (
     <>
-      <Box display="flex" gap={3}>
+      <Box display="flex" flexDirection={{ base: 'column', xl: 'row' }} gap={3} mb={4}>
         <Box width="100%">
           <AllowanceInfo />
         </Box>

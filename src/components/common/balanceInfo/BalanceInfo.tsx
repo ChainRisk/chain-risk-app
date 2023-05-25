@@ -26,7 +26,6 @@ const BalanceInfo = () => {
         align="center"
         background="whiteAlpha.900"
         p={4}
-        mb={4}
       >
         <Box flex={1}>
           <Text colorScheme="gray" fontSize="sm">

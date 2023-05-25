@@ -47,28 +47,28 @@ const NftItemSection: React.FC<NftItemSectionProps> = ({ nftURI }) => {
 
   return (
     <Box
-      marginTop={{ base: '1', sm: '5' }}
+      marginTop={{ base: '1', lg: '5' }}
       display="flex"
-      flexDirection={{ base: 'column', sm: 'row' }}
+      flexDirection={{ base: 'column', lg: 'row' }}
       justifyContent="space-between"
       background={useColorModeValue('white', 'gray.800')}
-      paddingLeft={4}
-      paddingRight={8}
-      paddingTop={4}
-      paddingBottom={6}
+      paddingLeft={{ base: 3, lg: 4 }}
+      paddingRight={{ base: 3, lg: 8 }}
+      paddingTop={{ base: 3, lg: 4 }}
+      paddingBottom={{ base: 3, lg: 6 }}
       borderRadius="xl"
     >
       <Box
         display="flex"
         flex="1"
-        marginRight="3"
+        marginRight={{ base: 0, lg: 3 }}
         position="relative"
         alignItems="center"
       >
         <Box
-          width={{ base: '100%', sm: '85%' }}
+          width={{ base: '100%', lg: '85%' }}
           zIndex="2"
-          marginLeft={{ base: '0', sm: '5%' }}
+          marginLeft={{ base: '0', lg: '5%' }}
           marginTop="5%"
         >
           <Image
@@ -97,11 +97,11 @@ const NftItemSection: React.FC<NftItemSectionProps> = ({ nftURI }) => {
         flex="1"
         flexDirection="column"
         justifyContent="center"
-        marginTop={{ base: '3', sm: '0' }}
+        marginTop={{ base: '3', lg: '0' }}
       >
-        <Box display="flex" justifyContent="space-between" alignItems={'center'}>
+        <Box display="flex" justifyContent="space-between" alignItems="center">
           <Heading marginTop="1">{data?.score}</Heading>
-          <HStack spacing={2} mb={3} justifyContent="flex-end">
+          <HStack spacing={2} justifyContent="flex-end">
             <Tag size={'md'} variant="solid" colorScheme="gray">
               {`Expiration: ${new Date().toLocaleDateString()}`}
             </Tag>
