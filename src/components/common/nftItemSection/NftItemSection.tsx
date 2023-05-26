@@ -1,4 +1,12 @@
-import { Box, Heading, Image, Tag, Text, useColorModeValue } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Heading,
+  Image,
+  Tag,
+  Text,
+  useColorModeValue,
+} from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { getColor, getLightColor } from '../../../utils/getScoreColors.ts';
 
@@ -94,7 +102,7 @@ const NftItemSection: React.FC<NftItemSectionProps> = ({ nftURI }) => {
         marginTop={{ base: '3', lg: '0' }}
       >
         <Box mb={3}>
-          <Box display={'flex'} alignItems={'center'}>
+          <Box display={'flex'} justifyContent={'space-between'}>
             <Box>
               <Heading fontWeight={'bold'} display={'flex'} alignItems={'center'} gap={4}>
                 <span>Credit rating:</span>
@@ -111,6 +119,9 @@ const NftItemSection: React.FC<NftItemSectionProps> = ({ nftURI }) => {
               <Box display="inline-flex" fontSize="md">
                 Blended credit score of {value}
               </Box>
+            </Box>
+            <Box>
+              <Button>Update score</Button>
             </Box>
           </Box>
         </Box>
