@@ -1,14 +1,15 @@
 import React from 'react';
 import { Box, Text } from '@chakra-ui/react';
+import { getBgColor, getColor, getLightColor } from '../../../utils/getScoreColors.ts';
 
 interface CreditScoreProps {
   creditRating: string;
   value: number;
 }
 const CreditScore: React.FC<CreditScoreProps> = ({ creditRating, value }) => {
-  const bgColor = value <= 35 ? 'red.50' : value <= 65 ? 'orange.50' : 'green.50';
-  const color = value <= 35 ? 'red.500' : value <= 65 ? 'orange.500' : 'green.500';
-  const lightColor = value <= 35 ? 'red.100' : value <= 65 ? 'orange.100' : 'green.100';
+  const bgColor = getBgColor(value);
+  const color = getColor(value);
+  const lightColor = getLightColor(value);
 
   return (
     <Box

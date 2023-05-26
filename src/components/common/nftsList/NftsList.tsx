@@ -24,28 +24,6 @@ export default function NftsList() {
   });
 
   return (
-    // <SimpleGrid columns={{ base: 1, lg: 2, xl: 3 }} spacingX={12} spacingY={20} py={12}>
-    //   {nftsListIsLoading || tokenURIListIsLoading ? (
-    //     <div>Loading...</div>
-    //   ) : (
-    //     <>
-    //       {tokenURIList?.length === 0 ? (
-    //         <Box display="flex" justifyContent="center">
-    //           No NFTs found
-    //         </Box>
-    //       ) : (
-    //         tokenURIList
-    //           ?.filter((el) => el.result)
-    //           ?.map((nft, idx) => (
-    //             <NftCard
-    //               key={idx}
-    //               nftURI={`https://ipfs.io/ipfs/${(nft.result as string).split('//')[1]}`}
-    //             />
-    //           ))
-    //       )}
-    //     </>
-    //   )}
-    // </SimpleGrid>
     <>
       {nftsListIsLoading || tokenURIListIsLoading ? (
         <div>Loading...</div>

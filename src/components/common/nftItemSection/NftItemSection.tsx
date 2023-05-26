@@ -1,16 +1,9 @@
-import {
-  Box,
-  Heading,
-  HStack,
-  Image,
-  Tag,
-  Text,
-  useColorModeValue,
-} from '@chakra-ui/react';
+import { Box, Heading, Image, Tag, Text, useColorModeValue } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
+import { getColor, getLightColor } from '../../../utils/getScoreColors.ts';
 
-// const IMAGE =
-//   'https://images.unsplash.com/photo-1642104704074-907c0698cbd9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2232&q=80';
+const IMAGE =
+  'https://images.unsplash.com/photo-1642104704074-907c0698cbd9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2232&q=80';
 
 interface NftItemSectionProps {
   nftURI: string;
@@ -21,7 +14,6 @@ function removeNonPrintableChars(str: string) {
 }
 
 const NftItemSection: React.FC<NftItemSectionProps> = ({ nftURI }) => {
-  console.log('nftURI', nftURI);
   const [data, setData] = useState({
     score: '',
     image: '',
@@ -42,8 +34,10 @@ const NftItemSection: React.FC<NftItemSectionProps> = ({ nftURI }) => {
     }
   }, [nftURI]);
 
-  console.log('data', data?.score);
-  console.log('data', data?.image);
+  const value = 84;
+
+  const color = getColor(value);
+  const lightColor = getLightColor(value);
 
   return (
     <Box
@@ -73,7 +67,7 @@ const NftItemSection: React.FC<NftItemSectionProps> = ({ nftURI }) => {
         >
           <Image
             borderRadius="lg"
-            src={data?.image || 'https://via.placeholder.com/300'}
+            src={data?.image || IMAGE}
             alt="some good alt text"
             objectFit="cover"
             width="100%"
@@ -99,13 +93,26 @@ const NftItemSection: React.FC<NftItemSectionProps> = ({ nftURI }) => {
         justifyContent="center"
         marginTop={{ base: '3', lg: '0' }}
       >
-        <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Heading marginTop="1">{data?.score}</Heading>
-          <HStack spacing={2} justifyContent="flex-end">
-            <Tag size={'md'} variant="solid" colorScheme="gray">
-              {`Expiration: ${new Date().toLocaleDateString()}`}
-            </Tag>
-          </HStack>
+        <Box mb={3}>
+          <Box display={'flex'} alignItems={'center'}>
+            <Box>
+              <Heading fontWeight={'bold'} display={'flex'} alignItems={'center'} gap={4}>
+                <span>Credit rating:</span>
+                <Box
+                  color={color}
+                  background={lightColor}
+                  px={2}
+                  py={1}
+                  borderRadius={'md'}
+                >
+                  {data?.score}
+                </Box>
+              </Heading>
+              <Box display="inline-flex" fontSize="md">
+                Blended credit score of {value}
+              </Box>
+            </Box>
+          </Box>
         </Box>
 
         <Text
@@ -115,13 +122,45 @@ const NftItemSection: React.FC<NftItemSectionProps> = ({ nftURI }) => {
           color={useColorModeValue('gray.700', 'gray.200')}
           fontSize="lg"
         >
-          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
-          Ipsum has been the industry's standard dummy text ever since the 1500s, when an
-          unknown printer took a galley of type and scrambled it to make a type specimen
-          book.
+          Unleash the power of your credit score with RiskPass! This game-changing
+          innovation harnesses Chainlink technology to store your credit ratings from
+          multiple agencies in a dynamic NFT, paving the way for exclusive on-chain
+          benefits and personalized borrowing rates. It's your financial future,
+          reimagined.
         </Text>
-        <Box>
-          <Text fontWeight="medium">Minted: {new Date().toLocaleDateString()}</Text>
+
+        <Box
+          display={'flex'}
+          flexDirection={{ base: 'column', xl: 'row' }}
+          gap={2}
+          alignItems="flex-end"
+        >
+          <Tag
+            size={'md'}
+            variant="solid"
+            background="blue.50"
+            color="blue.600"
+            display={'flex'}
+            justifyContent={'space-between'}
+            alignContent={'center'}
+            gap={3}
+          >
+            <span>Mint date:</span>
+            <span>{new Date().toLocaleDateString()}</span>
+          </Tag>
+          <Tag
+            size={'md'}
+            variant="solid"
+            background="gray.100"
+            color="gray.700"
+            display={'flex'}
+            justifyContent={'space-between'}
+            alignContent={'center'}
+            gap={3}
+          >
+            <span>Expiration date:</span>
+            <span>{new Date().toLocaleDateString()}</span>
+          </Tag>
         </Box>
       </Box>
     </Box>
