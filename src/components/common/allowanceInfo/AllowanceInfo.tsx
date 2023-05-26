@@ -1,15 +1,16 @@
-import { Box, Button, Stack, Text } from '@chakra-ui/react';
-import { useAccount, useContractRead } from 'wagmi';
+import { Box, Button, Stack, Text, useToast } from '@chakra-ui/react';
+import {
+  useAccount,
+  useContractRead,
+  useContractWrite,
+  useWaitForTransaction,
+} from 'wagmi';
 import { nftContractAddress } from '../../../utils/nftABI.ts';
-import { useState } from 'react';
 import { chainLinkABI, chainLinkContractAddress } from '../../../utils/chainLinkABI.ts';
-import ChainlinkAllowanceModal from '../chainlinkAllowanceModal/ChainlinkAllowanceModal.tsx';
 import { formatEther } from 'viem';
 
 const AllowanceInfo = () => {
   const { address } = useAccount();
-
-  const [showApproveModal, setShowApproveModal] = useState(false);
 
   const { data: allowance, isLoading: allowanceIsLoading } = useContractRead({
     address: chainLinkContractAddress,
@@ -18,6 +19,40 @@ const AllowanceInfo = () => {
     watch: true,
     args: [address || '0x000000', nftContractAddress],
   });
+
+  const toast = useToast();
+
+  const { data, write } = useContractWrite({
+    address: chainLinkContractAddress,
+    abi: chainLinkABI,
+    functionName: 'approve',
+  });
+
+  const { isLoading } = useWaitForTransaction({
+    hash: data?.hash,
+    onSuccess() {
+      toast({
+        title: 'Success',
+        description: `Chainlink allowance successfully approved.`,
+        status: 'success',
+      });
+    },
+    onError() {
+      toast({
+        title: 'Error',
+        description: `There was an error approving Chainlink allowance.`,
+        status: 'error',
+      });
+    },
+  });
+
+  const handleApprove = () => {
+    if (address) {
+      write({
+        args: [nftContractAddress, BigInt(200000000000000000)],
+      });
+    }
+  };
 
   return (
     <>
@@ -37,14 +72,10 @@ const AllowanceInfo = () => {
               : `${formatEther(BigInt(allowance || 0))} LINK`}
           </Text>
         </Box>
-        <Button size="sm" variant="solid" onClick={() => setShowApproveModal(true)}>
+        <Button size="sm" variant="solid" isLoading={isLoading} onClick={handleApprove}>
           Change allowance
         </Button>
       </Stack>
-      <ChainlinkAllowanceModal
-        isOpen={showApproveModal}
-        onClose={() => setShowApproveModal(false)}
-      />
     </>
   );
 };

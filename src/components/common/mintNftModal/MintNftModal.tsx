@@ -23,6 +23,7 @@ import { useForm } from 'react-hook-form';
 import React, { useEffect } from 'react';
 import { getAccount } from '@wagmi/core';
 import { useUserScore } from '../../../data/hooks/userScore.ts';
+import CreditScore from './CreditScore.tsx';
 
 interface FormValues {
   apiKey: string;
@@ -106,7 +107,9 @@ const MintNftModal: React.FC<MintNftModalProps> = ({ isOpen, onClose }) => {
     formState: { errors },
     reset,
     watch,
-  } = useForm<FormValues>();
+  } = useForm<FormValues>({
+    mode: 'onChange',
+  });
 
   const watchApiKey = watch('apiKey');
 
@@ -126,7 +129,7 @@ const MintNftModal: React.FC<MintNftModalProps> = ({ isOpen, onClose }) => {
     data: userScore,
     isLoading: userScoreIsLoading,
     error: userScoreError,
-  } = useUserScore(watchApiKey);
+  } = useUserScore(watchApiKey, watchApiKey?.length === 16);
 
   return (
     <>
@@ -173,6 +176,14 @@ const MintNftModal: React.FC<MintNftModalProps> = ({ isOpen, onClose }) => {
                     type="password"
                     {...register('apiKey', {
                       required: 'API key is required',
+                      minLength: {
+                        value: 16,
+                        message: 'API key must be 16 characters long',
+                      },
+                      maxLength: {
+                        value: 16,
+                        message: 'API key must be 16 characters long',
+                      },
                     })}
                   />
                   <FormErrorMessage>
@@ -183,9 +194,10 @@ const MintNftModal: React.FC<MintNftModalProps> = ({ isOpen, onClose }) => {
                 {userScoreIsLoading && <Text>Loading...</Text>}
                 {!!userScoreError && <Text>Api key is invalid</Text>}
                 {userScore && (
-                  <Text>
-                    Credit rating: {userScore.creditRating} ({userScore.value})
-                  </Text>
+                  <CreditScore
+                    value={userScore.value}
+                    creditRating={userScore.creditRating}
+                  />
                 )}
               </Stack>
             </ModalBody>

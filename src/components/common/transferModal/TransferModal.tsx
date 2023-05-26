@@ -22,6 +22,7 @@ import { useForm } from 'react-hook-form';
 import React, { useEffect } from 'react';
 import { getAccount } from '@wagmi/core';
 import { nftABI, nftContractAddress } from '../../../utils/nftABI.ts';
+import { parseEther } from 'viem';
 
 interface FormValues {
   value: number;
@@ -70,12 +71,12 @@ const TransferModal: React.FC<MintNftModalProps> = ({ isOpen, onClose }) => {
 
   const handleApprove = ({ value }: FormValues) => {
     write({
-      args: [BigInt(value)],
+      args: [parseEther(`${value}`)],
     });
   };
 
   useEffect(() => {
-    reset({ value: 200000000000000000 });
+    reset({ value: 0.2 });
   }, [reset, isOpen]);
 
   return (
@@ -120,6 +121,7 @@ const TransferModal: React.FC<MintNftModalProps> = ({ isOpen, onClose }) => {
                   <FormLabel htmlFor="apiKey">Anount</FormLabel>
                   <Input
                     type="number"
+                    step={0.1}
                     id="value"
                     {...register('value', {
                       required: 'Value is required',

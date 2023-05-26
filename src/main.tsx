@@ -9,14 +9,26 @@ import { AxiosError } from 'axios';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { alchemyProvider } from '@wagmi/core/providers/alchemy';
 import { mainnet } from '@wagmi/core/chains';
+import { InjectedConnector } from 'wagmi/connectors/injected';
+import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
 
-const { publicClient, webSocketPublicClient } = configureChains(
+const { chains, publicClient, webSocketPublicClient } = configureChains(
   [mainnet, polygonMumbai],
   [alchemyProvider({ apiKey: import.meta.env.VITE_ALCHEMY_KEY })],
 );
 
 const config = createConfig({
   autoConnect: true,
+  connectors: [
+    new MetaMaskConnector({ chains }),
+    new InjectedConnector({
+      chains,
+      options: {
+        name: 'Injected',
+        shimDisconnect: true,
+      },
+    }),
+  ],
   publicClient,
   webSocketPublicClient,
 });
