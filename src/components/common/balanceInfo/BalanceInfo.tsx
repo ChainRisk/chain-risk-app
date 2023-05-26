@@ -32,7 +32,9 @@ const BalanceInfo = () => {
             Total NFT contract balance:{' '}
             {balanceIsLoading
               ? 'Loading...'
-              : `${formatEther(BigInt(balance || 0))} LINK`}
+              : `${
+                  Math.round(parseFloat(formatEther(BigInt(balance || 0))) * 100) / 100
+                } LINK`}
           </Text>
         </Box>
         <Button size="sm" variant="solid" onClick={() => setShowTransferModal(true)}>

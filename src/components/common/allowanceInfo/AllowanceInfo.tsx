@@ -69,7 +69,9 @@ const AllowanceInfo = () => {
             Chainlink allowance:{' '}
             {allowanceIsLoading
               ? 'Loading...'
-              : `${formatEther(BigInt(allowance || 0))} LINK`}
+              : `${
+                  Math.round(parseFloat(formatEther(BigInt(allowance || 0))) * 100) / 100
+                } LINK`}
           </Text>
         </Box>
         <Button size="sm" variant="solid" isLoading={isLoading} onClick={handleApprove}>
