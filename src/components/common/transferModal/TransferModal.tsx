@@ -118,7 +118,7 @@ const TransferModal: React.FC<MintNftModalProps> = ({ isOpen, onClose }) => {
                   </VStack>
                 </Stack>
                 <FormControl isInvalid={!!errors.value}>
-                  <FormLabel htmlFor="apiKey">Anount</FormLabel>
+                  <FormLabel htmlFor="apiKey">Amount</FormLabel>
                   <Input
                     type="number"
                     step={0.1}
