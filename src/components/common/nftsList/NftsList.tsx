@@ -34,14 +34,13 @@ export default function NftsList() {
               No NFTs found
             </Box>
           ) : (
-            tokenURIList
-              ?.filter((el) => el.result)
-              ?.map((nft, idx) => (
-                <NftItemSection
-                  key={idx}
-                  nftURI={`https://ipfs.io/ipfs/${(nft.result as string).split('//')[1]}`}
-                />
-              ))
+            tokenURIList?.map((nft, idx) => (
+              <NftItemSection
+                key={idx}
+                nftURI={`https://ipfs.io/ipfs/${(nft.result as string).split('//')[1]}`}
+                tokenId={Number(nftsList[idx])}
+              />
+            ))
           )}
         </>
       )}

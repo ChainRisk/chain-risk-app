@@ -29,12 +29,17 @@ interface FormValues {
   apiKey: string;
 }
 
-interface MintNftModalProps {
+interface UpdateScoreModalProps {
   isOpen: boolean;
   onClose: () => void;
+  tokenId: number;
 }
 
-const MintNftModal: React.FC<MintNftModalProps> = ({ isOpen, onClose }) => {
+const UpdateScoreModal: React.FC<UpdateScoreModalProps> = ({
+  isOpen,
+  onClose,
+  tokenId,
+}) => {
   const toast = useToast();
   const account = getAccount();
 
@@ -51,14 +56,14 @@ const MintNftModal: React.FC<MintNftModalProps> = ({ isOpen, onClose }) => {
     },
   });
 
-  const { data: mintNFTData, write: writeMintNFT } = useContractWrite({
+  const { data: updateURIData, write: writeUpdateURI } = useContractWrite({
     address: nftContractAddress,
     abi: nftABI,
-    functionName: 'mintNFT',
+    functionName: 'updateURI',
     onError() {
       toast({
         title: 'Error',
-        description: `There was an error minting your NFT.`,
+        description: `There was an error updating score data.`,
         status: 'error',
       });
     },
@@ -69,8 +74,8 @@ const MintNftModal: React.FC<MintNftModalProps> = ({ isOpen, onClose }) => {
     confirmations: 10,
     onSuccess() {
       if (account?.address) {
-        writeMintNFT({
-          args: [account.address],
+        writeUpdateURI({
+          args: [BigInt(tokenId)],
         });
       }
     },
@@ -83,12 +88,13 @@ const MintNftModal: React.FC<MintNftModalProps> = ({ isOpen, onClose }) => {
     },
   });
 
-  const { isLoading: mintNFTIsLoading } = useWaitForTransaction({
-    hash: mintNFTData?.hash,
+  const { isLoading: updateURIDataIsLoading } = useWaitForTransaction({
+    hash: updateURIData?.hash,
+    confirmations: 5,
     onSuccess() {
       toast({
         title: 'Success',
-        description: `Successfully minted your NFT!`,
+        description: `Successfully updated score data.`,
         status: 'success',
       });
       onClose();
@@ -96,7 +102,7 @@ const MintNftModal: React.FC<MintNftModalProps> = ({ isOpen, onClose }) => {
     onError() {
       toast({
         title: 'Error',
-        description: `There was an error minting your NFT.`,
+        description: `There was an error updating score data.`,
         status: 'error',
       });
     },
@@ -114,7 +120,7 @@ const MintNftModal: React.FC<MintNftModalProps> = ({ isOpen, onClose }) => {
 
   const watchApiKey = watch('apiKey');
 
-  const handleMintNft = async ({ apiKey }: FormValues) => {
+  const handleUpdateScore = async ({ apiKey }: FormValues) => {
     console.log('apiKey', apiKey);
 
     if (account?.address) {
@@ -136,9 +142,9 @@ const MintNftModal: React.FC<MintNftModalProps> = ({ isOpen, onClose }) => {
     <>
       <Modal isOpen={isOpen} onClose={onClose} size="lg">
         <ModalOverlay />
-        <form onSubmit={handleSubmit(handleMintNft)}>
+        <form onSubmit={handleSubmit(handleUpdateScore)}>
           <ModalContent mx={3}>
-            <ModalHeader>Mint NFT</ModalHeader>
+            <ModalHeader>Update score</ModalHeader>
             <ModalCloseButton />
             <ModalBody pb={6}>
               <Stack spacing={3}>
@@ -206,11 +212,11 @@ const MintNftModal: React.FC<MintNftModalProps> = ({ isOpen, onClose }) => {
             <ModalFooter>
               <Button
                 type="submit"
-                isLoading={mintNFTIsLoading || ratingDataIsLoading}
+                isLoading={updateURIDataIsLoading || ratingDataIsLoading}
                 colorScheme="blue"
                 mr={3}
               >
-                Mint
+                Update
               </Button>
               <Button onClick={onClose}>Cancel</Button>
             </ModalFooter>
@@ -221,4 +227,4 @@ const MintNftModal: React.FC<MintNftModalProps> = ({ isOpen, onClose }) => {
   );
 };
 
-export default MintNftModal;
+export default UpdateScoreModal;

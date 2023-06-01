@@ -1,4 +1,4 @@
-export const nftContractAddress = '0xFaC52Fd45C8A6ab89e5c527E65E6c0668F16dDC0';
+export const nftContractAddress = '0x7BedDFD8372f4B4B6931a81D3DCfCCaA93aABaCf';
 export const nftABI = [
   {
     inputs: [
@@ -70,6 +70,25 @@ export const nftABI = [
     anonymous: false,
     inputs: [
       {
+        indexed: false,
+        internalType: 'uint256',
+        name: '_fromTokenId',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: '_toTokenId',
+        type: 'uint256',
+      },
+    ],
+    name: 'BatchMetadataUpdate',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
         indexed: true,
         internalType: 'bytes32',
         name: 'id',
@@ -103,6 +122,19 @@ export const nftABI = [
       },
     ],
     name: 'ChainlinkRequested',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: '_tokenId',
+        type: 'uint256',
+      },
+    ],
+    name: 'MetadataUpdate',
     type: 'event',
   },
   {
@@ -240,6 +272,19 @@ export const nftABI = [
     type: 'function',
   },
   {
+    inputs: [],
+    name: 'addressRequesting',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
     inputs: [
       {
         internalType: 'address',
@@ -298,7 +343,7 @@ export const nftABI = [
       },
       {
         internalType: 'string',
-        name: '_rating',
+        name: '_url',
         type: 'string',
       },
     ],
@@ -499,8 +544,14 @@ export const nftABI = [
     type: 'function',
   },
   {
-    inputs: [],
-    name: 'rating',
+    inputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+    ],
+    name: 'ratings',
     outputs: [
       {
         internalType: 'string',
@@ -689,6 +740,19 @@ export const nftABI = [
       },
     ],
     name: 'transferOwnership',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '_tokenId',
+        type: 'uint256',
+      },
+    ],
+    name: 'updateURI',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',

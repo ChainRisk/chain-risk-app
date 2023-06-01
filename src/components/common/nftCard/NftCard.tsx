@@ -13,7 +13,6 @@ function removeNonPrintableChars(str: string) {
 }
 
 const NftCard: React.FC<NftCardProps> = ({ nftURI }) => {
-  console.log('nftURI', nftURI);
   const [data, setData] = useState({
     score: '',
     image: '',
