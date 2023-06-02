@@ -33,12 +33,14 @@ interface UpdateScoreModalProps {
   isOpen: boolean;
   onClose: () => void;
   tokenId: number;
+  refetchTokenURIList: () => void;
 }
 
 const UpdateScoreModal: React.FC<UpdateScoreModalProps> = ({
   isOpen,
   onClose,
   tokenId,
+  refetchTokenURIList,
 }) => {
   const toast = useToast();
   const account = getAccount();
@@ -92,6 +94,7 @@ const UpdateScoreModal: React.FC<UpdateScoreModalProps> = ({
     hash: updateURIData?.hash,
     confirmations: 5,
     onSuccess() {
+      refetchTokenURIList();
       toast({
         title: 'Success',
         description: `Successfully updated score data.`,

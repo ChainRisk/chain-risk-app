@@ -3,6 +3,7 @@ import {
   Button,
   Heading,
   Image,
+  Skeleton,
   Tag,
   Text,
   useColorModeValue,
@@ -13,22 +14,24 @@ import { fromUnixTime } from 'date-fns';
 import UpdateScoreModal from '../updateScoreModal/UpdateScoreModal.tsx';
 import { useQuery } from 'react-query';
 
-const IMAGE =
-  'https://images.unsplash.com/photo-1642104704074-907c0698cbd9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2232&q=80';
-
 interface NftItemSectionProps {
   nftURI: string;
   tokenId: number;
+  refetchTokenURIList: () => void;
 }
 
 function removeNonPrintableChars(str: string) {
   return str.replace(/[^ -~]+/g, '');
 }
 
-const NftItemSection: React.FC<NftItemSectionProps> = ({ nftURI, tokenId }) => {
+const NftItemSection: React.FC<NftItemSectionProps> = ({
+  nftURI,
+  tokenId,
+  refetchTokenURIList,
+}) => {
   const [showUpdateScoreModal, setShowUpdateScoreModal] = useState(false);
 
-  const { data, isLoading: _dataIsLoading } = useQuery<{
+  const { data, isLoading: dataIsLoading } = useQuery<{
     name: string;
     image: string;
     description: string;
@@ -45,7 +48,7 @@ const NftItemSection: React.FC<NftItemSectionProps> = ({ nftURI, tokenId }) => {
 
   const image = data?.image
     ? `https://ipfs.io/ipfs/${(data?.image as string).split('//')[1]}`
-    : IMAGE;
+    : '';
   const blendedScore = data?.attributes?.find(
     (attr) => attr.trait_type === 'blendedScore',
   )?.value as number;
@@ -90,14 +93,18 @@ const NftItemSection: React.FC<NftItemSectionProps> = ({ nftURI, tokenId }) => {
             marginLeft={{ base: '0', xl: '5%' }}
             marginTop="5%"
           >
-            <Image
-              borderRadius="lg"
-              src={image}
-              alt="some good alt text"
-              objectFit="contain"
-              width="100%"
-              maxHeight="350px"
-            />
+            {dataIsLoading ? (
+              <Skeleton height="306px" width="100%" borderRadius="lg" />
+            ) : (
+              <Image
+                borderRadius="lg"
+                src={image}
+                alt="some good alt text"
+                objectFit="contain"
+                width="100%"
+                maxHeight="350px"
+              />
+            )}
           </Box>
           <Box zIndex="1" width="100%" position="absolute" height="100%">
             <Box
@@ -123,33 +130,38 @@ const NftItemSection: React.FC<NftItemSectionProps> = ({ nftURI, tokenId }) => {
               display={'flex'}
               justifyContent={'space-between'}
               flexDirection={{ base: 'column', md: 'row' }}
-              alignItems={{ base: 'flex-end', md: 'center' }}
+              alignItems={{ base: 'flex-end', md: 'flex-start' }}
               gap={4}
             >
               <Box width={'100%'}>
-                <Heading
-                  fontWeight={'bold'}
-                  display={'flex'}
-                  alignItems={'center'}
-                  gap={4}
-                >
-                  <span>Credit rating:</span>
-                  <Box
-                    color={color}
-                    background={lightColor}
-                    px={2}
-                    py={1}
-                    borderRadius={'md'}
+                <Skeleton isLoaded={!dataIsLoading} noOfLines={1}>
+                  <Heading
+                    fontWeight={'bold'}
+                    display={'flex'}
+                    alignItems={'center'}
+                    gap={4}
                   >
-                    {creditRating}
-                  </Box>
-                </Heading>
-                <Box display="inline-flex" fontSize="md">
-                  Blended credit score of {blendedScore}
-                </Box>
+                    <span>Credit rating:</span>
+                    <Box
+                      color={color}
+                      background={lightColor}
+                      px={2}
+                      py={1}
+                      borderRadius={'md'}
+                    >
+                      {creditRating}
+                    </Box>
+                  </Heading>
+                </Skeleton>
+                <Skeleton mt={3} isLoaded={!dataIsLoading} noOfLines={1}>
+                  <Text fontSize="md">Blended credit score of {blendedScore}</Text>
+                </Skeleton>
               </Box>
               <Box>
-                <Button onClick={() => setShowUpdateScoreModal(true)}>
+                <Button
+                  isDisabled={dataIsLoading}
+                  onClick={() => setShowUpdateScoreModal(true)}
+                >
                   Update score
                 </Button>
               </Box>
@@ -176,32 +188,36 @@ const NftItemSection: React.FC<NftItemSectionProps> = ({ nftURI, tokenId }) => {
             gap={2}
             alignItems="flex-end"
           >
-            <Tag
-              size={'md'}
-              variant="solid"
-              background="blue.50"
-              color="blue.600"
-              display={'flex'}
-              justifyContent={'space-between'}
-              alignContent={'center'}
-              gap={3}
-            >
-              <span>Mint date:</span>
-              <span>{mintDate}</span>
-            </Tag>
-            <Tag
-              size={'md'}
-              variant="solid"
-              background="gray.100"
-              color="gray.700"
-              display={'flex'}
-              justifyContent={'space-between'}
-              alignContent={'center'}
-              gap={3}
-            >
-              <span>Expiration date:</span>
-              <span>{expirationDate}</span>
-            </Tag>
+            <Skeleton isLoaded={!dataIsLoading}>
+              <Tag
+                size={'md'}
+                variant="solid"
+                background="blue.50"
+                color="blue.600"
+                display={'flex'}
+                justifyContent={'space-between'}
+                alignContent={'center'}
+                gap={3}
+              >
+                <span>Mint date:</span>
+                <span>{mintDate}</span>
+              </Tag>
+            </Skeleton>
+            <Skeleton isLoaded={!dataIsLoading}>
+              <Tag
+                size={'md'}
+                variant="solid"
+                background="gray.100"
+                color="gray.700"
+                display={'flex'}
+                justifyContent={'space-between'}
+                alignContent={'center'}
+                gap={3}
+              >
+                <span>Expiration date:</span>
+                <span>{expirationDate}</span>
+              </Tag>
+            </Skeleton>
           </Box>
         </Box>
       </Box>
@@ -209,6 +225,7 @@ const NftItemSection: React.FC<NftItemSectionProps> = ({ nftURI, tokenId }) => {
         tokenId={tokenId}
         isOpen={showUpdateScoreModal}
         onClose={() => setShowUpdateScoreModal(false)}
+        refetchTokenURIList={refetchTokenURIList}
       />
     </>
   );

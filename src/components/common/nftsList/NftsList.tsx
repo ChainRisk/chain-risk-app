@@ -14,7 +14,11 @@ export default function NftsList() {
     args: [address || '0x000000'],
   });
 
-  const { data: tokenURIList, isLoading: tokenURIListIsLoading } = useContractReads({
+  const {
+    data: tokenURIList,
+    isLoading: tokenURIListIsLoading,
+    refetch: refetchTokenURIList,
+  } = useContractReads({
     contracts: nftsList.map((nft: bigint) => ({
       address: nftContractAddress,
       abi: nftABI,
@@ -22,6 +26,10 @@ export default function NftsList() {
       args: [nft],
     })),
   });
+
+  const handleRefetchTokenURIList = () => {
+    refetchTokenURIList();
+  };
 
   return (
     <>
@@ -34,13 +42,19 @@ export default function NftsList() {
               No NFTs found
             </Box>
           ) : (
-            tokenURIList?.map((nft, idx) => (
-              <NftItemSection
-                key={idx}
-                nftURI={`https://ipfs.io/ipfs/${(nft.result as string).split('//')[1]}`}
-                tokenId={Number(nftsList[idx])}
-              />
-            ))
+            tokenURIList?.map((nft, idx) => {
+              const nftURI = `https://ipfs.io/ipfs/${
+                (nft.result as string).split('//')[1]
+              }`;
+              return (
+                <NftItemSection
+                  key={nftURI}
+                  nftURI={nftURI}
+                  tokenId={Number(nftsList[idx])}
+                  refetchTokenURIList={handleRefetchTokenURIList}
+                />
+              );
+            })
           )}
         </>
       )}
