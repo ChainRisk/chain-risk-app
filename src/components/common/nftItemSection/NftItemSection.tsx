@@ -94,7 +94,7 @@ const NftItemSection: React.FC<NftItemSectionProps> = ({
             marginTop="5%"
           >
             {dataIsLoading ? (
-              <Skeleton height="306px" width="100%" borderRadius="lg" />
+              <Skeleton height="260px" width="100%" borderRadius="lg" />
             ) : (
               <Image
                 borderRadius="lg"
