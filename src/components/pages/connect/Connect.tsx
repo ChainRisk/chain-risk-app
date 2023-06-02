@@ -34,12 +34,12 @@ export const Connect = () => {
         <Stack mb={6}>
           <Heading fontSize={'4xl'} display={'flex'} alignItems={'center'} gap={3} mb={4}>
             <SiChainlink />
-            RiskPass
+            ChainRisk
           </Heading>
           <Text fontSize={'lg'} color={'gray.600'}>
             <Text mb={3}>Welcome to a new era of financial empowerment.</Text>
             <Text mb={3}>
-              RiskPass unique dynamic NFT takes your credit score to the next level by
+              ChainRisk unique dynamic NFT takes your credit score to the next level by
               securely storing ratings from multiple agencies on the blockchain, providing
               a unique risk identity.
             </Text>

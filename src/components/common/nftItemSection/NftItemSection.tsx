@@ -175,7 +175,7 @@ const NftItemSection: React.FC<NftItemSectionProps> = ({
             color={useColorModeValue('gray.700', 'gray.200')}
             fontSize="lg"
           >
-            Unleash the power of your credit score with RiskPass! This game-changing
+            Unleash the power of your credit score with ChainRisk! This game-changing
             innovation harnesses Chainlink technology to store your credit ratings from
             multiple agencies in a dynamic NFT, paving the way for exclusive on-chain
             benefits and personalized borrowing rates. It's your financial future,
