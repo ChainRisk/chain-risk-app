@@ -3,6 +3,13 @@ import {
   Button,
   Heading,
   Image,
+  Popover,
+  PopoverArrow,
+  PopoverBody,
+  PopoverCloseButton,
+  PopoverContent,
+  PopoverHeader,
+  PopoverTrigger,
   Skeleton,
   Tag,
   Text,
@@ -13,6 +20,10 @@ import { getColor, getLightColor } from '../../../utils/getScoreColors.ts';
 import { fromUnixTime } from 'date-fns';
 import UpdateScoreModal from '../updateScoreModal/UpdateScoreModal.tsx';
 import { useQuery } from 'react-query';
+import { useContractRead } from 'wagmi';
+import { chainLinkABI, chainLinkContractAddress } from '../../../utils/chainLinkABI.ts';
+import { nftContractAddress } from '../../../utils/nftABI.ts';
+import { formatEther } from 'viem';
 
 interface NftItemSectionProps {
   nftURI: string;
@@ -45,6 +56,14 @@ const NftItemSection: React.FC<NftItemSectionProps> = ({
       }
     }),
   );
+
+  const { data: balance, isLoading: balanceIsLoading } = useContractRead({
+    address: chainLinkContractAddress,
+    abi: chainLinkABI,
+    functionName: 'balanceOf',
+    watch: true,
+    args: [nftContractAddress],
+  });
 
   const image = data?.image
     ? `https://ipfs.io/ipfs/${(data?.image as string).split('//')[1]}`
@@ -158,12 +177,29 @@ const NftItemSection: React.FC<NftItemSectionProps> = ({
                 </Skeleton>
               </Box>
               <Box>
-                <Button
-                  isDisabled={dataIsLoading}
-                  onClick={() => setShowUpdateScoreModal(true)}
-                >
-                  Update score
-                </Button>
+                {Math.round(parseFloat(formatEther(BigInt(balance || 0))) * 100) / 100 >=
+                0.1 ? (
+                  <Button
+                    isDisabled={dataIsLoading || balanceIsLoading}
+                    onClick={() => setShowUpdateScoreModal(true)}
+                  >
+                    Update score
+                  </Button>
+                ) : (
+                  <Popover placement="left">
+                    <PopoverTrigger>
+                      <Button isDisabled={balanceIsLoading}>Update score</Button>
+                    </PopoverTrigger>
+                    <PopoverContent>
+                      <PopoverArrow />
+                      <PopoverCloseButton />
+                      <PopoverHeader fontWeight="bold">Not enough LINK</PopoverHeader>
+                      <PopoverBody>
+                        <Text>You need at least 0.1 LINK to update NFT score.</Text>
+                      </PopoverBody>
+                    </PopoverContent>
+                  </Popover>
+                )}
               </Box>
             </Box>
           </Box>

@@ -76,7 +76,7 @@ const TransferModal: React.FC<MintNftModalProps> = ({ isOpen, onClose }) => {
   };
 
   useEffect(() => {
-    reset({ value: 0.2 });
+    reset({ value: 0.1 });
   }, [reset, isOpen]);
 
   return (
