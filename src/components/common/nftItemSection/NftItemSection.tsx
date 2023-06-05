@@ -20,9 +20,8 @@ import { getColor, getLightColor } from '../../../utils/getScoreColors.ts';
 import { fromUnixTime } from 'date-fns';
 import UpdateScoreModal from '../updateScoreModal/UpdateScoreModal.tsx';
 import { useQuery } from 'react-query';
-import { useContractRead } from 'wagmi';
-import { chainLinkABI, chainLinkContractAddress } from '../../../utils/chainLinkABI.ts';
-import { nftContractAddress } from '../../../utils/nftABI.ts';
+import { useAccount, useContractRead } from 'wagmi';
+import { nftABI, nftContractAddress } from '../../../utils/nftABI.ts';
 import { formatEther } from 'viem';
 
 interface NftItemSectionProps {
@@ -41,7 +40,7 @@ const NftItemSection: React.FC<NftItemSectionProps> = ({
   refetchTokenURIList,
 }) => {
   const [showUpdateScoreModal, setShowUpdateScoreModal] = useState(false);
-
+  const { address } = useAccount();
   const { data, isLoading: dataIsLoading } = useQuery<{
     name: string;
     image: string;
@@ -58,11 +57,11 @@ const NftItemSection: React.FC<NftItemSectionProps> = ({
   );
 
   const { data: balance, isLoading: balanceIsLoading } = useContractRead({
-    address: chainLinkContractAddress,
-    abi: chainLinkABI,
-    functionName: 'balanceOf',
+    address: nftContractAddress,
+    abi: nftABI,
+    functionName: 'getLinkBalance',
     watch: true,
-    args: [nftContractAddress],
+    args: [address || '0x000000'],
   });
 
   const image = data?.image

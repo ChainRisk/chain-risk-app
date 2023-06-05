@@ -12,20 +12,19 @@ import {
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import MintNftModal from '../mintNftModal/MintNftModal.tsx';
-import { useContractRead } from 'wagmi';
-import { chainLinkABI, chainLinkContractAddress } from '../../../utils/chainLinkABI.ts';
-import { nftContractAddress } from '../../../utils/nftABI.ts';
+import { useAccount, useContractRead } from 'wagmi';
+import { nftABI, nftContractAddress } from '../../../utils/nftABI.ts';
 import { formatEther } from 'viem';
 
 const NftsInfo = () => {
   const [showMinNftModal, setShowMintNftModal] = useState(false);
-
+  const { address } = useAccount();
   const { data: balance, isLoading: balanceIsLoading } = useContractRead({
-    address: chainLinkContractAddress,
-    abi: chainLinkABI,
-    functionName: 'balanceOf',
+    address: nftContractAddress,
+    abi: nftABI,
+    functionName: 'getLinkBalance',
     watch: true,
-    args: [nftContractAddress],
+    args: [address || '0x000000'],
   });
 
   return (
