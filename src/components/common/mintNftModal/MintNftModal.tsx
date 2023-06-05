@@ -1,10 +1,6 @@
 import {
   Avatar,
   Button,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-  Input,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -102,17 +98,9 @@ const MintNftModal: React.FC<MintNftModalProps> = ({ isOpen, onClose }) => {
     },
   });
 
-  const {
-    handleSubmit,
-    register,
-    formState: { errors },
-    reset,
-    watch,
-  } = useForm<FormValues>({
+  const { handleSubmit, reset } = useForm<FormValues>({
     mode: 'onChange',
   });
-
-  const watchApiKey = watch('apiKey');
 
   const handleMintNft = async ({ apiKey }: FormValues) => {
     console.log('apiKey', apiKey);
@@ -130,7 +118,7 @@ const MintNftModal: React.FC<MintNftModalProps> = ({ isOpen, onClose }) => {
     data: userScore,
     isLoading: userScoreIsLoading,
     error: userScoreError,
-  } = useUserScore(watchApiKey, watchApiKey?.length === 16);
+  } = useUserScore();
 
   return (
     <>
@@ -140,8 +128,8 @@ const MintNftModal: React.FC<MintNftModalProps> = ({ isOpen, onClose }) => {
           <ModalContent mx={3}>
             <ModalHeader>Mint NFT</ModalHeader>
             <ModalCloseButton />
-            <ModalBody pb={6}>
-              <Stack spacing={3}>
+            <ModalBody>
+              <Stack spacing={4}>
                 <Stack direction={'row'}>
                   <Avatar
                     size={'sm'}
@@ -170,27 +158,12 @@ const MintNftModal: React.FC<MintNftModalProps> = ({ isOpen, onClose }) => {
                     </Text>
                   </VStack>
                 </Stack>
-                <FormControl isInvalid={!!errors.apiKey}>
-                  <FormLabel htmlFor="apiKey">API key</FormLabel>
-                  <Input
-                    id="apiKey"
-                    type="password"
-                    {...register('apiKey', {
-                      required: 'API key is required',
-                      minLength: {
-                        value: 16,
-                        message: 'API key must be 16 characters long',
-                      },
-                      maxLength: {
-                        value: 16,
-                        message: 'API key must be 16 characters long',
-                      },
-                    })}
-                  />
-                  <FormErrorMessage>
-                    {errors.apiKey && (errors.apiKey.message as string)}
-                  </FormErrorMessage>
-                </FormControl>
+
+                <Text color="gray.600">
+                  To mint an NFT, ChainRisk will need to fetch and apply your latest
+                  credit score. Please bear in mind that you will need to approve two
+                  wallet pop-ups: one to request the score and one to mint your NFT.
+                </Text>
 
                 {userScoreIsLoading && <Text>Loading...</Text>}
                 {!!userScoreError && <Text>Api key is invalid</Text>}
@@ -200,14 +173,6 @@ const MintNftModal: React.FC<MintNftModalProps> = ({ isOpen, onClose }) => {
                     creditRating={userScore.creditRating}
                   />
                 )}
-
-                <Text fontSize="sm" color="gray.600">
-                  To mint an NFT, ChainRisk will need to fetch and apply your latest
-                  credit score.
-                  <br />
-                  Please bear in mind that you will need to approve two wallet pop-ups:
-                  one to request the score and one to mint your NFT.
-                </Text>
               </Stack>
             </ModalBody>
 
