@@ -1,20 +1,21 @@
 import { Box, Button, Stack, Text } from '@chakra-ui/react';
-import { useContractRead } from 'wagmi';
-import { nftContractAddress } from '../../../utils/nftABI.ts';
+import { useAccount, useContractRead } from 'wagmi';
+import { nftABI, nftContractAddress } from '../../../utils/nftABI.ts';
 import { useState } from 'react';
 import TransferModal from '../transferModal/TransferModal.tsx';
-import { chainLinkABI, chainLinkContractAddress } from '../../../utils/chainLinkABI.ts';
 import { formatEther } from 'viem';
 
 const BalanceInfo = () => {
+  const { address } = useAccount();
+
   const [showTransferModal, setShowTransferModal] = useState(false);
 
   const { data: balance, isLoading: balanceIsLoading } = useContractRead({
-    address: chainLinkContractAddress,
-    abi: chainLinkABI,
-    functionName: 'balanceOf',
+    address: nftContractAddress,
+    abi: nftABI,
+    functionName: 'getLinkBalance',
     watch: true,
-    args: [nftContractAddress],
+    args: [address || '0x000000'],
   });
 
   return (
@@ -29,7 +30,7 @@ const BalanceInfo = () => {
       >
         <Box flex={1}>
           <Text colorScheme="gray" fontSize="sm">
-            Total NFT contract balance:{' '}
+            LINK balance:{' '}
             {balanceIsLoading
               ? 'Loading...'
               : `${
