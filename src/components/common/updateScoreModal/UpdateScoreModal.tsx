@@ -209,6 +209,14 @@ const UpdateScoreModal: React.FC<UpdateScoreModalProps> = ({
                     creditRating={userScore.creditRating}
                   />
                 )}
+
+                <Text fontSize="sm" color="gray.600">
+                  To update your credit rating, ChainRisk will need to fetch and apply
+                  your latest credit score.
+                  <br />
+                  Please bear in mind that you will need to approve two wallet pop-ups:
+                  one to request the score and one to update your NFT.
+                </Text>
               </Stack>
             </ModalBody>
 

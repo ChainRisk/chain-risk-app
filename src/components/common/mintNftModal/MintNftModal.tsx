@@ -200,6 +200,14 @@ const MintNftModal: React.FC<MintNftModalProps> = ({ isOpen, onClose }) => {
                     creditRating={userScore.creditRating}
                   />
                 )}
+
+                <Text fontSize="sm" color="gray.600">
+                  To mint an NFT, ChainRisk will need to fetch and apply your latest
+                  credit score.
+                  <br />
+                  Please bear in mind that you will need to approve two wallet pop-ups:
+                  one to request the score and one to mint your NFT.
+                </Text>
               </Stack>
             </ModalBody>
 
