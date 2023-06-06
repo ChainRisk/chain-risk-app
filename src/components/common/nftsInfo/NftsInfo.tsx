@@ -56,7 +56,7 @@ const NftsInfo = () => {
             Mint NFT
           </Button>
         ) : (
-          <Popover placement="left">
+          <Popover>
             <PopoverTrigger>
               <Button colorScheme="blue" isDisabled={balanceIsLoading}>
                 Mint NFT

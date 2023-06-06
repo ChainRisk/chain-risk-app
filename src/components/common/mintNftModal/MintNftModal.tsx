@@ -125,7 +125,7 @@ const MintNftModal: React.FC<MintNftModalProps> = ({ isOpen, onClose }) => {
       <Modal isOpen={isOpen} onClose={onClose} size="lg">
         <ModalOverlay />
         <form onSubmit={handleSubmit(handleMintNft)}>
-          <ModalContent mx={3}>
+          <ModalContent>
             <ModalHeader>Mint NFT</ModalHeader>
             <ModalCloseButton />
             <ModalBody>

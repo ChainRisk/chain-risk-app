@@ -26,7 +26,7 @@ import { FiChevronDown, FiHome, FiMenu } from 'react-icons/fi';
 import { IconType } from 'react-icons';
 
 import { disconnect, getAccount } from '@wagmi/core';
-import { SiChainlink } from 'react-icons/all';
+import { ReactComponent as Logo } from '../../../assets/Logo.svg';
 
 interface LinkItemProps {
   name: string;
@@ -80,7 +80,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
     >
       <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
         <Text fontSize="3xl" fontWeight="bold" display="flex" alignItems="center" gap={3}>
-          <SiChainlink />
+          <Logo height={40} width={40} />
           <Text fontSize="xl" fontWeight="bold">
             ChainRisk
           </Text>
@@ -172,7 +172,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
         alignItems="center"
         gap={3}
       >
-        <SiChainlink />
+        <Logo height={40} width={40} />
         <Text fontSize="xl" fontWeight="bold">
           ChainRisk
         </Text>

@@ -9,7 +9,7 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import { useConnect } from 'wagmi';
-import { SiChainlink } from 'react-icons/all';
+import { ReactComponent as Logo } from '../../../assets/Logo.svg';
 
 export const Connect = () => {
   const { connect, connectors, error, isLoading, pendingConnector } = useConnect();
@@ -33,7 +33,7 @@ export const Connect = () => {
       >
         <Stack mb={6}>
           <Heading fontSize={'4xl'} display={'flex'} alignItems={'center'} gap={3} mb={4}>
-            <SiChainlink />
+            <Logo height={40} width={40} />
             ChainRisk
           </Heading>
           <Text fontSize={'lg'} color={'gray.600'}>

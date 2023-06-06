@@ -128,7 +128,7 @@ const UpdateScoreModal: React.FC<UpdateScoreModalProps> = ({
       <Modal isOpen={isOpen} onClose={onClose} size="lg">
         <ModalOverlay />
         <form onSubmit={handleSubmit(handleUpdateScore)}>
-          <ModalContent mx={3}>
+          <ModalContent>
             <ModalHeader>Update score</ModalHeader>
             <ModalCloseButton />
             <ModalBody>

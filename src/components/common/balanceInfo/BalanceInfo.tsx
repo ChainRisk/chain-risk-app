@@ -23,10 +23,10 @@ const BalanceInfo = () => {
   return (
     <>
       <Stack
-        direction="row"
+        direction={{ base: 'column', lg: 'row' }}
         spacing={4}
-        rounded="md"
-        align="center"
+        rounded="lg"
+        align={{ base: 'stretch', lg: 'center' }}
         background="whiteAlpha.900"
         p={4}
       >

@@ -185,7 +185,7 @@ const NftItemSection: React.FC<NftItemSectionProps> = ({
                     Update score
                   </Button>
                 ) : (
-                  <Popover placement="left">
+                  <Popover>
                     <PopoverTrigger>
                       <Button isDisabled={balanceIsLoading}>Update score</Button>
                     </PopoverTrigger>

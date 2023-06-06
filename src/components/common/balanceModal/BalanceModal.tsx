@@ -147,11 +147,11 @@ const BalanceModal: React.FC<BalanceModalProps> = ({ isOpen, onClose }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="lg">
       <ModalOverlay />
-      <ModalContent mx={3}>
+      <ModalContent>
         <form onSubmit={handleSubmit(handleTransfer)}>
           <ModalHeader>Top up your balance</ModalHeader>
           <ModalCloseButton />
-          <ModalBody pb={6}>
+          <ModalBody>
             <Stack direction={'row'} mb={3}>
               <Avatar
                 size={'sm'}

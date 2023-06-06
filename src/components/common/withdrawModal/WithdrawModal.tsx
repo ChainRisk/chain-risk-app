@@ -97,11 +97,11 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ isOpen, onClose }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="lg">
       <ModalOverlay />
-      <ModalContent mx={3}>
+      <ModalContent>
         <form onSubmit={handleSubmit(handleTransfer)}>
           <ModalHeader>Withdraw LINK</ModalHeader>
           <ModalCloseButton />
-          <ModalBody pb={6}>
+          <ModalBody>
             <Stack direction={'row'} mb={3}>
               <Avatar
                 size={'sm'}
