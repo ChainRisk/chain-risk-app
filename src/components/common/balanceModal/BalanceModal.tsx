@@ -70,6 +70,16 @@ const BalanceModal: React.FC<BalanceModalProps> = ({ isOpen, onClose }) => {
     address: chainLinkContractAddress,
     abi: chainLinkABI,
     functionName: 'approve',
+    onError(error) {
+      const errorMessage =
+        error?.message?.split('\n')?.[0] ||
+        'There was an error approving Chainlink allowance.';
+      toast({
+        title: 'Error',
+        description: errorMessage,
+        status: 'error',
+      });
+    },
   });
 
   const { isLoading: approveIsLoading } = useWaitForTransaction({
@@ -81,10 +91,13 @@ const BalanceModal: React.FC<BalanceModalProps> = ({ isOpen, onClose }) => {
         status: 'success',
       });
     },
-    onError() {
+    onError(error) {
+      const errorMessage =
+        error?.message?.split('\n')?.[0] ||
+        'There was an error approving Chainlink allowance.';
       toast({
         title: 'Error',
-        description: `There was an error approving Chainlink allowance.`,
+        description: errorMessage,
         status: 'error',
       });
     },
@@ -102,6 +115,15 @@ const BalanceModal: React.FC<BalanceModalProps> = ({ isOpen, onClose }) => {
     address: nftContractAddress,
     abi: nftABI,
     functionName: 'transferLink',
+    onError(error) {
+      const errorMessage =
+        error?.message?.split('\n')?.[0] || 'There was an error transferring Link.';
+      toast({
+        title: 'Error',
+        description: errorMessage,
+        status: 'error',
+      });
+    },
   });
 
   const { isLoading: transferLinkIsLoading } = useWaitForTransaction({
@@ -114,10 +136,12 @@ const BalanceModal: React.FC<BalanceModalProps> = ({ isOpen, onClose }) => {
       });
       onClose();
     },
-    onError() {
+    onError(error) {
+      const errorMessage =
+        error?.message?.split('\n')?.[0] || 'There was an error transferring Link.';
       toast({
         title: 'Error',
-        description: `There was an error transferring Link.`,
+        description: errorMessage,
         status: 'error',
       });
     },

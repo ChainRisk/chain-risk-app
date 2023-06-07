@@ -41,10 +41,12 @@ const UpdateScoreModal: React.FC<UpdateScoreModalProps> = ({
     address: nftContractAddress,
     abi: nftABI,
     functionName: 'requestRatingData',
-    onError() {
+    onError(error) {
+      const errorMessage =
+        error?.message?.split('\n')?.[0] || 'There was an error requesting rating data.';
       toast({
         title: 'Error',
-        description: `There was an error requesting rating data.`,
+        description: errorMessage,
         status: 'error',
       });
     },
@@ -54,10 +56,12 @@ const UpdateScoreModal: React.FC<UpdateScoreModalProps> = ({
     address: nftContractAddress,
     abi: nftABI,
     functionName: 'updateURI',
-    onError() {
+    onError(error) {
+      const errorMessage =
+        error?.message?.split('\n')?.[0] || 'There was an error updating score data.';
       toast({
         title: 'Error',
-        description: `There was an error updating score data.`,
+        description: errorMessage,
         status: 'error',
       });
     },
@@ -73,10 +77,12 @@ const UpdateScoreModal: React.FC<UpdateScoreModalProps> = ({
         });
       }
     },
-    onError() {
+    onError(error) {
+      const errorMessage =
+        error?.message?.split('\n')?.[0] || 'There was an error requesting rating data.';
       toast({
         title: 'Error',
-        description: `There was an error requesting rating data.`,
+        description: errorMessage,
         status: 'error',
       });
     },
@@ -94,10 +100,12 @@ const UpdateScoreModal: React.FC<UpdateScoreModalProps> = ({
       });
       onClose();
     },
-    onError() {
+    onError(error) {
+      const errorMessage =
+        error?.message?.split('\n')?.[0] || 'There was an error updating score data.';
       toast({
         title: 'Error',
-        description: `There was an error updating score data.`,
+        description: errorMessage,
         status: 'error',
       });
     },

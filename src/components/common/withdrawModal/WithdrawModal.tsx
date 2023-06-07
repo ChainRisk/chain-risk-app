@@ -56,6 +56,15 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ isOpen, onClose }) => {
     address: nftContractAddress,
     abi: nftABI,
     functionName: 'withdrawLink',
+    onError(error) {
+      const errorMessage =
+        error?.message?.split('\n')?.[0] || 'There was an error withdrawing your LINK.';
+      toast({
+        title: 'Error',
+        description: errorMessage,
+        status: 'error',
+      });
+    },
   });
 
   const { isLoading: transferLinkIsLoading } = useWaitForTransaction({
@@ -68,10 +77,12 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ isOpen, onClose }) => {
       });
       onClose();
     },
-    onError() {
+    onError(error) {
+      const errorMessage =
+        error?.message?.split('\n')?.[0] || 'There was an error withdrawing your LINK.';
       toast({
         title: 'Error',
-        description: `There was an error withdrawing your LINK.`,
+        description: errorMessage,
         status: 'error',
       });
     },

@@ -38,10 +38,12 @@ const MintNftModal: React.FC<MintNftModalProps> = ({ isOpen, onClose }) => {
     address: nftContractAddress,
     abi: nftABI,
     functionName: 'requestRatingData',
-    onError() {
+    onError(error) {
+      const errorMessage =
+        error?.message?.split('\n')?.[0] || 'There was an error requesting rating data.';
       toast({
         title: 'Error',
-        description: `There was an error requesting rating data.`,
+        description: errorMessage,
         status: 'error',
       });
     },
@@ -51,10 +53,12 @@ const MintNftModal: React.FC<MintNftModalProps> = ({ isOpen, onClose }) => {
     address: nftContractAddress,
     abi: nftABI,
     functionName: 'mintNFT',
-    onError() {
+    onError(error) {
+      const errorMessage =
+        error?.message?.split('\n')?.[0] || 'There was an error minting your NFT.';
       toast({
         title: 'Error',
-        description: `There was an error minting your NFT.`,
+        description: errorMessage,
         status: 'error',
       });
     },
@@ -70,10 +74,12 @@ const MintNftModal: React.FC<MintNftModalProps> = ({ isOpen, onClose }) => {
         });
       }
     },
-    onError() {
+    onError(error) {
+      const errorMessage =
+        error?.message?.split('\n')?.[0] || 'There was an error requesting rating data.';
       toast({
         title: 'Error',
-        description: `There was an error requesting rating data.`,
+        description: errorMessage,
         status: 'error',
       });
     },
@@ -89,10 +95,12 @@ const MintNftModal: React.FC<MintNftModalProps> = ({ isOpen, onClose }) => {
       });
       onClose();
     },
-    onError() {
+    onError(error) {
+      const errorMessage =
+        error?.message?.split('\n')?.[0] || 'There was an error minting your NFT.';
       toast({
         title: 'Error',
-        description: `There was an error minting your NFT.`,
+        description: errorMessage,
         status: 'error',
       });
     },
@@ -102,9 +110,7 @@ const MintNftModal: React.FC<MintNftModalProps> = ({ isOpen, onClose }) => {
     mode: 'onChange',
   });
 
-  const handleMintNft = async ({ apiKey }: FormValues) => {
-    console.log('apiKey', apiKey);
-
+  const handleMintNft = async () => {
     if (account?.address) {
       requestRatingData();
     }
