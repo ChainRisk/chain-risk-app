@@ -32,7 +32,7 @@ const BalanceInfo = () => {
       >
         <Box flex={1}>
           <Box maxWidth={700}>
-            <Text colorScheme="gray" fontWeight="bold" mb={1}>
+            <Text colorScheme="gray" fontWeight="bold">
               Balance:{' '}
               {balanceIsLoading
                 ? 'Loading...'
@@ -41,9 +41,7 @@ const BalanceInfo = () => {
                   } LINK`}
             </Text>
             <Text fontSize="sm" color="gray.600">
-              Before minting your NFT, you need to 'Approve' and 'Transfer' LINK tokens.
-              This process funds the credit rating data request, allowing the NFT to
-              accurately represent your credit score.
+              Minting or updating an NFT costs <b>0.1 LINK</b>
             </Text>
           </Box>
         </Box>

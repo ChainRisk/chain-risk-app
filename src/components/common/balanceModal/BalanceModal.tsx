@@ -5,6 +5,7 @@ import {
   Divider,
   FormControl,
   FormErrorMessage,
+  FormHelperText,
   FormLabel,
   Input,
   Modal,
@@ -237,6 +238,9 @@ const BalanceModal: React.FC<BalanceModalProps> = ({ isOpen, onClose }) => {
                     },
                   })}
                 />
+                <FormHelperText>
+                  Mint or update cost: <b>0.1 LINK</b>.
+                </FormHelperText>
                 <FormErrorMessage>
                   {errors.value && (errors.value.message as string)}
                 </FormErrorMessage>

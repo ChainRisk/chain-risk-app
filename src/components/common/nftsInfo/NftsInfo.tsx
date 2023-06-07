@@ -35,16 +35,14 @@ const NftsInfo = () => {
             Welcome to a new era of financial empowerment.
           </Text>
           <Text mb={3}>
-            ChainRisk unique dynamic NFT takes your credit score to the next level by
-            securely storing ratings from multiple agencies on the blockchain, providing a
-            unique risk identity.
+            Before minting your NFT, you need to 'Approve' and 'Transfer' LINK tokens.
+            This process funds the credit rating data request, allowing the NFT to
+            accurately represent your credit score.
           </Text>
           <Text mb={3}>
-            Experience unrivaled on-chain perks and tailor-made borrowing rates that truly
-            reflect your financial credibility. Your future starts here, with a credit
-            score that unlocks more than ever before.
+            Minting or updating an NFT costs <b>0.1 LINK</b>. This is a one-time fee that
+            covers the cost of the credit rating data request.
           </Text>
-          <Text>Get ready to reimagine your financial journey!</Text>
         </Text>
 
         {Math.round(parseFloat(formatEther(BigInt(balance || 0))) * 100) / 100 >= 0.1 ? (
