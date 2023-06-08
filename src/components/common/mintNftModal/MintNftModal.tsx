@@ -18,8 +18,6 @@ import { nftABI, nftContractAddress } from '../../../utils/nftABI.ts';
 import { useForm } from 'react-hook-form';
 import React, { useEffect } from 'react';
 import { getAccount } from '@wagmi/core';
-import { useUserScore } from '../../../data/hooks/userScore.ts';
-import CreditScore from '../creditScore/CreditScore.tsx';
 
 interface FormValues {
   apiKey: string;
@@ -120,11 +118,11 @@ const MintNftModal: React.FC<MintNftModalProps> = ({ isOpen, onClose }) => {
     reset();
   }, [reset, isOpen]);
 
-  const {
-    data: userScore,
-    isLoading: userScoreIsLoading,
-    error: userScoreError,
-  } = useUserScore();
+  // const {
+  //   data: userScore,
+  //   isLoading: userScoreIsLoading,
+  //   error: userScoreError,
+  // } = useUserScore();
 
   return (
     <>
@@ -171,14 +169,14 @@ const MintNftModal: React.FC<MintNftModalProps> = ({ isOpen, onClose }) => {
                   wallet pop-ups: one to request the score and one to mint your NFT.
                 </Text>
 
-                {userScoreIsLoading && <Text>Loading...</Text>}
-                {!!userScoreError && <Text>Api key is invalid</Text>}
-                {userScore && (
-                  <CreditScore
-                    value={userScore.value}
-                    creditRating={userScore.creditRating}
-                  />
-                )}
+                {/*{userScoreIsLoading && <Text>Loading...</Text>}*/}
+                {/*{!!userScoreError && <Text>Api key is invalid</Text>}*/}
+                {/*{userScore && (*/}
+                {/*  <CreditScore*/}
+                {/*    value={userScore.value}*/}
+                {/*    creditRating={userScore.creditRating}*/}
+                {/*  />*/}
+                {/*)}*/}
               </Stack>
             </ModalBody>
 
