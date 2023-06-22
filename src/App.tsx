@@ -1,26 +1,32 @@
-import { useAccount } from 'wagmi';
+import { useAccount, useNetwork } from 'wagmi';
 import { Sidebar } from './components/common/sidebar';
 import { Connect } from './components/pages/connect/Connect.tsx';
 import { Route, Routes } from 'react-router-dom';
 import Home from './components/pages/home/Home.tsx';
-import ErrorBoundary from './utils/ErrorBoundary.tsx';
-import { GlobalErrorBoundaryFallback } from './components/GlobalErrorBoundaryFallback.tsx';
+import { polygonMumbai } from 'wagmi/chains';
+import SwitchNetwork from './components/pages/switchNetwork/SwitchNetwork.tsx';
 
 function App() {
   const { isConnected } = useAccount();
 
+  const { chain } = useNetwork();
+
+  const isWrongNetwork = chain?.id !== polygonMumbai.id;
+
+  if (!isConnected) {
+    return <Connect />;
+  }
+
+  if (isWrongNetwork) {
+    return <SwitchNetwork />;
+  }
+
   return (
-    <ErrorBoundary fallback={GlobalErrorBoundaryFallback}>
-      {isConnected ? (
-        <Sidebar>
-          <Routes>
-            <Route path="/" element={<Home />} />
-          </Routes>
-        </Sidebar>
-      ) : (
-        <Connect />
-      )}
-    </ErrorBoundary>
+    <Sidebar>
+      <Routes>
+        <Route path="/" element={<Home />} />
+      </Routes>
+    </Sidebar>
   );
 }
 
