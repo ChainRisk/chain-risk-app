@@ -8,12 +8,13 @@ import { BrowserRouter } from 'react-router-dom';
 import { AxiosError } from 'axios';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { alchemyProvider } from '@wagmi/core/providers/alchemy';
-import { mainnet } from '@wagmi/core/chains';
 import { InjectedConnector } from 'wagmi/connectors/injected';
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
+import { GlobalErrorBoundaryFallback } from './components/GlobalErrorBoundaryFallback.tsx';
+import ErrorBoundary from './utils/ErrorBoundary.tsx';
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [mainnet, polygonMumbai],
+  [polygonMumbai],
   [alchemyProvider({ apiKey: import.meta.env.VITE_ALCHEMY_KEY })],
 );
 
@@ -64,17 +65,19 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <QueryClientProvider client={queryClient}>
       <WagmiConfig config={config}>
         <BrowserRouter>
-          <ChakraProvider
-            toastOptions={{
-              defaultOptions: {
-                position: 'bottom-right',
-                duration: 5000,
-                isClosable: true,
-              },
-            }}
-          >
-            <App />
-          </ChakraProvider>
+          <ErrorBoundary fallback={GlobalErrorBoundaryFallback}>
+            <ChakraProvider
+              toastOptions={{
+                defaultOptions: {
+                  position: 'bottom-right',
+                  duration: 5000,
+                  isClosable: true,
+                },
+              }}
+            >
+              <App />
+            </ChakraProvider>
+          </ErrorBoundary>
         </BrowserRouter>
       </WagmiConfig>
     </QueryClientProvider>

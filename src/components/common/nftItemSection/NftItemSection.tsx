@@ -41,7 +41,11 @@ const NftItemSection: React.FC<NftItemSectionProps> = ({
 }) => {
   const [showUpdateScoreModal, setShowUpdateScoreModal] = useState(false);
   const { address } = useAccount();
-  const { data, isLoading: dataIsLoading } = useQuery<{
+  const {
+    data,
+    isLoading: dataIsLoading,
+    isError,
+  } = useQuery<{
     name: string;
     image: string;
     description: string;
@@ -51,7 +55,7 @@ const NftItemSection: React.FC<NftItemSectionProps> = ({
       if (response.ok) {
         return response.json();
       } else {
-        console.error('Error fetching nft data');
+        throw new Error('Error fetching nft data');
       }
     }),
   );
@@ -84,6 +88,8 @@ const NftItemSection: React.FC<NftItemSectionProps> = ({
   const color = getColor(blendedScore);
   const lightColor = getLightColor(blendedScore);
 
+  const isLoading = dataIsLoading || isError;
+
   return (
     <>
       <Box
@@ -111,7 +117,7 @@ const NftItemSection: React.FC<NftItemSectionProps> = ({
             marginLeft={{ base: '0', xl: '5%' }}
             marginTop="5%"
           >
-            {dataIsLoading ? (
+            {isLoading ? (
               <Skeleton height="260px" width="100%" borderRadius="lg" />
             ) : (
               <Image
@@ -152,7 +158,7 @@ const NftItemSection: React.FC<NftItemSectionProps> = ({
               gap={4}
             >
               <Box width={'100%'}>
-                <Skeleton isLoaded={!dataIsLoading} noOfLines={1}>
+                <Skeleton isLoaded={!isLoading} noOfLines={1}>
                   <Heading
                     fontWeight={'bold'}
                     display={'flex'}
@@ -171,7 +177,7 @@ const NftItemSection: React.FC<NftItemSectionProps> = ({
                     </Box>
                   </Heading>
                 </Skeleton>
-                <Skeleton mt={3} isLoaded={!dataIsLoading} noOfLines={1}>
+                <Skeleton mt={3} isLoaded={!isLoading} noOfLines={1}>
                   <Text fontSize="md">Blended credit score of {blendedScore}</Text>
                 </Skeleton>
               </Box>
@@ -223,7 +229,7 @@ const NftItemSection: React.FC<NftItemSectionProps> = ({
             gap={2}
             alignItems="flex-end"
           >
-            <Skeleton isLoaded={!dataIsLoading}>
+            <Skeleton isLoaded={!isLoading}>
               <Tag
                 size={'md'}
                 variant="solid"
@@ -238,7 +244,7 @@ const NftItemSection: React.FC<NftItemSectionProps> = ({
                 <span>{mintDate}</span>
               </Tag>
             </Skeleton>
-            <Skeleton isLoaded={!dataIsLoading}>
+            <Skeleton isLoaded={!isLoading}>
               <Tag
                 size={'md'}
                 variant="solid"
